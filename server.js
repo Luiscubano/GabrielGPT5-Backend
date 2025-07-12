@@ -8,12 +8,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ Conexión a MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log('✅ Conectado a MongoDB Atlas'))
   .catch(err => console.log('❌ Error de conexión:', err));
 
+// ✅ Esquemas de Mongoose
 const Usuario = mongoose.model('Usuario', new mongoose.Schema({
   nombre: String,
   correo: String,
@@ -31,6 +33,12 @@ const Apuesta = mongoose.model('Apuesta', new mongoose.Schema({
   fecha: Date
 }));
 
+// ✅ Ruta raíz para confirmar estado
+app.get('/', (req, res) => {
+  res.send('✅ GabrielGPT5 está activo y conectado en la nube.');
+});
+
+// ✅ Rutas API
 app.post('/api/registro', async (req, res) => {
   const { nombre, correo, password, wallet } = req.body;
   const yaExiste = await Usuario.findOne({ correo });
@@ -73,4 +81,5 @@ app.get('/api/apuestas/:correo', async (req, res) => {
   res.json(apuestas);
 });
 
+// ✅ Corrección aquí: estaba mal escrito "a\npp.listen"
 app.listen(5000, () => console.log('GabrielGPT5 corriendo en puerto 5000'));
